@@ -55,8 +55,8 @@ class Day03 : Puzzle("Day03", 198, 230) {
 	}
 
 	override fun part2(input: List<String>): Int {
-		val oxygen = part2Rec(input, 0, true).toInt(radix = 2).also { println(it) }
-		val co2 = part2Rec(input, 0, false).toInt(radix = 2).also { println(it) }
+		val oxygen = part2Rec(input, 0, true).toInt(radix = 2)
+		val co2 = part2Rec(input, 0, false).toInt(radix = 2)
 		return oxygen * co2
 	}
 
@@ -66,7 +66,6 @@ class Day03 : Puzzle("Day03", 198, 230) {
 		input.forEach {
 			count += if (it[depth] == '1') 1 else -1
 		}
-		println(count)
 		return when {
 			count >= 0 -> part2Rec(input.filter { it[depth] == if (dominantBit) '1' else '0' }, depth + 1, dominantBit)
 			else -> part2Rec(input.filter { it[depth] == if (!dominantBit) '1' else '0' }, depth + 1, dominantBit)
