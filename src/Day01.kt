@@ -5,6 +5,7 @@ class Day01 : Puzzle("Day01", 7, 5) {
 		.count { it.second > it.first }
 
 	override fun part2(input: List<String>) = input
+		.asSequence()
 		.map(String::toInt)
 		.windowed(3, 1)
 		.map(List<Int>::sum)
