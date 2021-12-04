@@ -1,5 +1,5 @@
 fun main() {
-	val puzzle = Day03()
+	val puzzle = Day04()
 
 	val testInput = readInput("${puzzle.name}_test")
 	check(puzzle.part1(testInput) == puzzle.testResultPart1)
