@@ -1,28 +1,27 @@
-import java.util.regex.Pattern
-
-class Day04 : Puzzle("Day04", 4512 , 0) {
-	override fun part1(input: List<String>): Int {
-		val drawnNumbers = input[0].trim().split(',').map(String::toInt)
-		val boards = input.drop(2).filter(String::isNotBlank).chunked(5).map {  it.toBoard() }
+class Day04 : Puzzle("Day04", 4512 , 1924) {
+	override fun part1(input: Input): Int {
+		val drawnNumbers = input.getDrawnNumbers()
+		val boards = input.getBoards()
 
 		for (i in drawnNumbers.indices) {
 			boards.forEach { board ->
-				if (board.mark(drawnNumbers[i])) {
-					return board.flatMap { row ->
-						row.filter {
-							!it.second
-						} }.sumOf(Pair<Int, Boolean>::first) * drawnNumbers[i]
+				if (board.markAndIsWin(drawnNumbers[i])) {
+					return board.calculateFinalScore(drawnNumbers[i])
 				}
 			}
 		}
-		return 0
+		error("Could not determine a Winner")
 	}
+
+	private fun Input.getDrawnNumbers() = this[0].trim().split(',').map(String::toInt)
+
+	private fun Input.getBoards() = this.drop(2).filter(String::isNotBlank).chunked(5).map {  it.toBoard() }
 
 	private fun List<String>.toBoard() : Array<Array<Pair<Int, Boolean>>> = this.map { line ->
 		line.trim().split(Regex("""\s+""")).map { Pair(it.toInt(), false) }.toTypedArray()
 	}.toTypedArray()
 
-	private fun Array<Array<Pair<Int, Boolean>>>.mark(drawnNumber : Int) : Boolean {
+	private fun Array<Array<Pair<Int, Boolean>>>.markAndIsWin(drawnNumber : Int) : Boolean {
 		for (x in this.indices) {
 			for (y in this[x].indices) {
 				val cell = this[x][y]
@@ -37,8 +36,19 @@ class Day04 : Puzzle("Day04", 4512 , 0) {
 		return false
 	}
 
+	private fun Array<Array<Pair<Int, Boolean>>>.calculateFinalScore(winningNumber: Int) =
+		this.flatMap { row -> row.filter { !it.second } }.sumOf(Pair<Int, Boolean>::first) * winningNumber
 
-	override fun part2(input: List<String>): Int {
-		return 0
+	override fun part2(input: Input): Int {
+		val drawnNumbers = input.getDrawnNumbers()
+		val boards = input.getBoards()
+		val candidates = boards.toMutableList()
+		var drawnNumberIndex = 0
+		while (candidates.size > 1) {
+			candidates.removeIf { it.markAndIsWin(drawnNumbers[drawnNumberIndex]) }
+			drawnNumberIndex++
+		}
+		while (!candidates[0].markAndIsWin(drawnNumbers[drawnNumberIndex])) drawnNumberIndex++
+		return candidates[0].calculateFinalScore(drawnNumbers[drawnNumberIndex])
 	}
 }

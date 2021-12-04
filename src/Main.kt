@@ -9,3 +9,5 @@ fun main() {
 	println(puzzle.part1(input))
 	println(puzzle.part2(input))
 }
+
+typealias Input = List<String>
