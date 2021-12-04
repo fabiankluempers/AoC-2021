@@ -4,17 +4,17 @@ class Day04 : Puzzle("Day04", 4512 , 1924) {
 	private fun Input.getBoards() = this.drop(2).filter(String::isNotBlank).chunked(5).map {  it.toBoard() }
 
 	private fun Input.toBoard() : BingoBoard = this.map { line ->
-		line.trim().split(Regex("""\s+""")).map { Pair(it.toInt(), false) }.toTypedArray()
-	}.toTypedArray()
+		line.trim().split(Regex("""\s+""")).map { BingoCell(it.toInt(), false) }
+	}
 
 	private fun BingoBoard.markAndIsWin(drawnNumber : Int) : Boolean {
 		for (x in this.indices) {
 			for (y in this[x].indices) {
 				val cell = this[x][y]
-				if (cell.first == drawnNumber) {
-					this[x][y] = cell.copy(second = true)
-					val checkRow = this[x].all { it.second }
-					val checkColumn = this.all { it[y].second }
+				if (cell.value == drawnNumber) {
+					this[x][y].isMarked = true
+					val checkRow = this[x].all { it.isMarked }
+					val checkColumn = this.all { it[y].isMarked }
 					return checkRow || checkColumn
 				}
 			}
@@ -23,7 +23,7 @@ class Day04 : Puzzle("Day04", 4512 , 1924) {
 	}
 
 	private fun BingoBoard.sumOfUnmarked() =
-		this.flatMap { row -> row.filter { !it.second } }.sumOf(Pair<Int, Boolean>::first)
+		this.flatMap { row -> row.filter { !it.isMarked } }.sumOf(BingoCell::value)
 
 	override fun part1(input: Input): Int {
 		val drawnNumbers = input.getDrawnNumbers()
@@ -55,6 +55,8 @@ class Day04 : Puzzle("Day04", 4512 , 1924) {
 
 		return candidates[0].sumOfUnmarked() * drawnNumbers[drawnNumberIndex]
 	}
+
+	data class BingoCell(val value : Int, var isMarked : Boolean)
 }
 
-typealias BingoBoard = Array<Array<Pair<Int, Boolean>>>
+typealias BingoBoard = List<List<Day04.BingoCell>>
