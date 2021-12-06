@@ -8,6 +8,11 @@ class Day05 : Puzzle("Day05", 5, 12) {
 		Line(points[0], points[1])
 	}
 
+	//This solution relies heavily on the fact, that the input contains ONLY vertical, horizontal and diagonal lines.
+	//It will result in an infinite sequence generation otherwise.
+	//This solution can be improved by using a canonical representation (only from left to right and top to bottom),
+	//which results in less cases.
+	//Additionally a bounded range should be used to calculate all points of the diagonal lines.
 	private fun Line.expandLine(): List<Point> = when {
 		first.x == second.x -> //horizontal
 			(if (first.y <= second.y) (first.y..second.y) else (second.y..first.y)).map { Point(first.x, it) }
@@ -23,7 +28,6 @@ class Day05 : Puzzle("Day05", 5, 12) {
 			generateSequence(first) { Point(it.x - 1, it.y - 1) }.takeWhile { it != second }.plus(second).toList()
 		else -> error("$this is not a horizontal, vertical or diagonal line") //would be infinite loop anyways
 	}
-
 
 	private fun List<Line>.calculateArrBounds() = Pair(
 		maxOf { maxOf(it.first.x, it.second.x) } + 1,
