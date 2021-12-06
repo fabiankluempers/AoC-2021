@@ -46,10 +46,10 @@ class Day06 : Puzzle<Long>("Day06", 5934, 26984457539) {
 		return fishInState.sum()
 	}
 
-	/**
-	 * Calculates the total number of descendants that a fish produces in [numOfDays] days,
-	 * when it gets its first child on the [firstDescendantOnDay] day.
-	 */
+
+	//Recursive helper function for "improvedSolution".
+	//Calculates the total number of descendants that a fish produces in [numOfDays] days,
+	//when it gets its first child on the [firstDescendantOnDay] day.
 	private fun numOfDescendantFish(firstDescendantOnDay: Int, numOfDays : Int) : Long {
 		val dayDelta = (numOfDays - firstDescendantOnDay)
 		if (dayDelta < 0) return 0
