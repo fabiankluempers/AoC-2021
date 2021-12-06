@@ -1,4 +1,4 @@
-class Day02 : Puzzle("Day02", 150, 900) {
+class Day02 : Puzzle<Int>("Day02", 150, 900) {
 	override fun part1(input: List<String>) = input
 		.fold(Pair(0,0)) { (horizontal, vertical), string ->
 			val (direction, delta) = splitInput(string)

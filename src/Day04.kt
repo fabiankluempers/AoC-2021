@@ -1,4 +1,4 @@
-class Day04 : Puzzle("Day04", 4512 , 1924) {
+class Day04 : Puzzle<Int>("Day04", 4512 , 1924) {
 	private fun Input.getDrawnNumbers() = this[0].split(',').map(String::toInt)
 
 	private fun Input.getBoards() = this.drop(2).filter(String::isNotBlank).chunked(5).map {  it.toBoard() }

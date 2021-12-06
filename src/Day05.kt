@@ -1,4 +1,4 @@
-class Day05 : Puzzle("Day05", 5, 12) {
+class Day05 : Puzzle<Int>("Day05", 5, 12) {
 
 	private fun Input.toLines(): List<Line> = this.map { line ->
 		val points = line.split(" -> ").map {

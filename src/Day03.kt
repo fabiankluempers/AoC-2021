@@ -1,6 +1,6 @@
 import kotlin.text.StringBuilder
 
-class Day03 : Puzzle("Day03", 198, 230) {
+class Day03 : Puzzle<Int>("Day03", 198, 230) {
 	override fun part1(input: List<String>): Int {
 		return part1Solution2(input)
 	}

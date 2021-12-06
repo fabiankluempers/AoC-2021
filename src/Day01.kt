@@ -1,4 +1,4 @@
-class Day01 : Puzzle("Day01", 7, 5) {
+class Day01 : Puzzle<Int>("Day01", 7, 5) {
 	override fun part1(input: List<String>) = input
 		.map(String::toInt)
 		.zipWithNext()

@@ -1,4 +1,4 @@
-abstract class Puzzle(val name: String, val testResultPart1 : Int, val testResultPart2 : Int) {
-	abstract fun part1(input : Input) : Int
-	abstract fun part2(input : Input) : Int
+abstract class Puzzle<T>(val name: String, val testResultPart1 : T, val testResultPart2 : T) {
+	abstract fun part1(input : Input) : T
+	abstract fun part2(input : Input) : T
 }
