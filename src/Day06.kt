@@ -1,6 +1,9 @@
 class Day06 : Puzzle<Long>("Day06", 5934, 26984457539) {
-	override fun part1(input: Input): Long = improvedSolution(input, 80)
+	override fun part1(input: Input): Long = improvedSolution2(input, 80)
 
+	override fun part2(input: Input): Long = improvedSolution2(input, 256)
+
+	//This solution is capable of solving only part1. It is very inefficient.
 	private fun firstSolution(input: Input, numOfDays: Int) : Long {
 		val lanternFishSchool = input[0].split(',').map { LanternFish(it.toInt()) }.toMutableList()
 		repeat(numOfDays) { lanternFishSchool += lanternFishSchool.mapNotNull(LanternFish::createDescendant) }
@@ -20,6 +23,7 @@ class Day06 : Puzzle<Long>("Day06", 5934, 26984457539) {
 		}
 	}
 
+	//This solution uses recursion. It is capable of solving part1 and part 2 but its still very inefficient.
 	private fun improvedSolution(input: Input, numOfDays : Int) : Long {
 		val initialTimerValues = input[0].split(',').map(String::toInt)
 		return initialTimerValues.groupingBy { it }.eachCount().map {
@@ -27,7 +31,20 @@ class Day06 : Puzzle<Long>("Day06", 5934, 26984457539) {
 		}.plus(initialTimerValues.count().toLong()).sum()
 	}
 
-	override fun part2(input: Input): Long = improvedSolution(input, 256)
+	//This solution is very efficient.
+	private fun improvedSolution2(input: Input, numOfDays: Int) : Long {
+		val fishInState : ArrayDeque<Long> = ArrayDeque(9)
+		val initialValues = input[0].split(',').map(String::toInt).groupingBy { it }.eachCount()
+		for (i in 0..8) {
+			fishInState.add(initialValues[i]?.toLong() ?: 0)
+		}
+		repeat(numOfDays) {
+			val first = fishInState.removeFirst()
+			fishInState.addLast(first)
+			fishInState[6] += first
+		}
+		return fishInState.sum()
+	}
 
 	/**
 	 * Calculates the total number of descendants that a fish produces in [numOfDays] days,
