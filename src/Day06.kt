@@ -26,9 +26,12 @@ class Day06 : Puzzle<Long>("Day06", 5934, 26984457539) {
 	//This solution uses recursion. It is capable of solving part1 and part 2 but its still very inefficient.
 	private fun improvedSolution(input: Input, numOfDays: Int): Long {
 		val initialTimerValues = input[0].split(',').map(String::toInt)
-		return initialTimerValues.groupingBy { it }.eachCount().map {
-			numOfDescendantFish(it.key + 1, numOfDays) * it.value
-		}.plus(initialTimerValues.count().toLong()).sum()
+		return initialTimerValues
+			.groupingBy { it }
+			.eachCount()
+			.map { numOfDescendantFish(it.key + 1, numOfDays) * it.value }
+			.plus(initialTimerValues.count().toLong())
+			.sum()
 	}
 
 	//This solution is very efficient.
