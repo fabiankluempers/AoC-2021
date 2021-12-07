@@ -61,3 +61,4 @@ class Day06 : Puzzle<Long>("Day06", 5934, 26984457539) {
 		return result
 	}
 }
+
