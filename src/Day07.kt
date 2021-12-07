@@ -7,9 +7,9 @@ class Day07 : Puzzle<Int>("Day07", 37 , 168) {
 
 	private fun solution(input: Input, isToTriangularNumber: Boolean) : Int {
 		val crabPositions = input.first().splitToInt(',')
-		return (0 .. crabPositions.maxOf { it }).mapIndexed { index, _ ->
+		return (0 .. crabPositions.maxOf { it }).map { candidatePos ->
 			crabPositions.sumOf {
-				with((it - index).absoluteValue) { if (isToTriangularNumber) toTriangularNumber() else this }
+				with((it - candidatePos).absoluteValue) { if (isToTriangularNumber) toTriangularNumber() else this }
 			}
 		}.minOf { it }
 	}
