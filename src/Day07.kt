@@ -1,17 +1,24 @@
 import kotlin.math.absoluteValue
+import kotlin.math.roundToInt
 
-class Day07 : Puzzle<Int>("Day07", 37 , 168) {
+class Day07 : Puzzle<Int>("Day07", 37, 168) {
 	override fun part1(input: Input): Int = solution(input, false)
 
 	override fun part2(input: Input): Int = solution(input, true)
 
-	private fun solution(input: Input, isToTriangularNumber: Boolean) : Int {
+	private fun solution(input: Input, isToTriangularNumber: Boolean): Int {
 		val crabPositions = input.first().splitToInt(',')
-		return (0 .. crabPositions.maxOf { it }).map { candidatePos ->
-			crabPositions.sumOf {
-				with((it - candidatePos).absoluteValue) { if (isToTriangularNumber) toTriangularNumber() else this }
+		val maxCrabPos = crabPositions.maxOf { it }
+		return (0..maxCrabPos)
+			.map { candidatePos ->
+				crabPositions
+					.sumOf {
+						with((it - candidatePos).absoluteValue) {
+							if (isToTriangularNumber) toTriangularNumber() else this
+						}
+					}
 			}
-		}.minOf { it }
+			.minOf { it }
 	}
 
 	private fun Int.toTriangularNumber() = (this * this + this) / 2
