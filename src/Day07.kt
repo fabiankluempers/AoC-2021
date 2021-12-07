@@ -8,7 +8,7 @@ class Day07 : Puzzle<Int>("Day07", 37, 168) {
 
 	private fun solution(input: Input, isToTriangularNumber: Boolean): Int {
 		val crabPositions = input.first().splitToInt(',')
-		val maxCrabPos = crabPositions.maxOf(Int::id)
+		val maxCrabPos = crabPositions.maxOf(::identity)
 		return (0..maxCrabPos)
 			.map { candidatePos ->
 				crabPositions
@@ -18,7 +18,7 @@ class Day07 : Puzzle<Int>("Day07", 37, 168) {
 						}
 					}
 			}
-			.minOf(Int::id)
+			.minOf(::identity)
 	}
 
 	private fun Int.toTriangularNumber() = (this * this + this) / 2

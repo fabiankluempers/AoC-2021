@@ -24,6 +24,6 @@ fun <T> T.check(message : String = "", predicate: Predicate<T>) : T =
 	if (!predicate.test(this)) throw IllegalStateException(message) else this
 
 /**
- * Identity function for ints
+ * Identity function { x -> x }
  */
-fun Int.id() = this
+fun <T> identity(x: T): T = x

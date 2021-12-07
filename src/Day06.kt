@@ -27,7 +27,7 @@ class Day06 : Puzzle<Long>("Day06", 5934, 26984457539) {
 	private fun improvedSolution(input: Input, numOfDays: Int): Long {
 		val initialTimerValues = input[0].split(',').map(String::toInt)
 		return initialTimerValues
-			.groupingBy { it }
+			.groupingBy(::identity)
 			.eachCount()
 			.map { numOfDescendantFish(it.key + 1, numOfDays) * it.value }
 			.plus(initialTimerValues.count().toLong())
@@ -37,7 +37,7 @@ class Day06 : Puzzle<Long>("Day06", 5934, 26984457539) {
 	//This solution is very efficient.
 	private fun improvedSolution2(input: Input, numOfDays: Int): Long {
 		val fishInState: ArrayDeque<Long> = ArrayDeque(9)
-		val initialValues = input[0].split(',').map(String::toInt).groupingBy { it }.eachCount()
+		val initialValues = input[0].split(',').map(String::toInt).groupingBy(::identity).eachCount()
 		for (i in 0..8) {
 			fishInState.add(initialValues[i]?.toLong() ?: 0)
 		}
