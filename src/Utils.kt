@@ -22,3 +22,8 @@ fun String.splitToInt(delimiter: Char) = split(delimiter).map(String::toInt)
 
 fun <T> T.check(message : String = "", predicate: Predicate<T>) : T =
 	if (!predicate.test(this)) throw IllegalStateException(message) else this
+
+/**
+ * Identity function for ints
+ */
+fun Int.id() = this
