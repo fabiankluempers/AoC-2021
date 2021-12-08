@@ -1,32 +1,31 @@
 class Day08 : Puzzle<Int>("Day08", 26, 61229) {
-	private val uniqueLengths = listOf(2,3,4,7)
+	private val uniqueLengths = listOf(2, 3, 4, 7)
 
 	override fun part1(input: Input): Int = input
-			.flatMap { it.split(" | ")[1].split(' ') }
-			.count { it.length in uniqueLengths }
+		.flatMap { it.split(" | ")[1].split(' ') }
+		.count { it.length in uniqueLengths }
 
 	override fun part2(input: Input): Int = input.sumOf(::solveLine)
 
 	//This works but it is really not pretty. I might optimize, if i find time.
-	private fun solveLine(line: String) : Int {
+	private fun solveLine(line: String): Int {
 		val intToSignal = mutableMapOf<Int, Set<Char>>()
 		val (input, output) = with(line.split(" | ")) {
 			Pair(this[0].split(' '), this[1].split(' '))
 		}
 		val inputByLength = input.groupBy { it.length }.mapValues { it.value.map(String::toSet).toMutableList() }
 
-		listOf(1,7,4,8).forEachIndexed { index: Int, i: Int ->
+		listOf(1, 7, 4, 8).forEachIndexed { index: Int, i: Int ->
 			intToSignal[i] = inputByLength[uniqueLengths[index]]!!.first()
 		}
 
 		fun MutableList<Set<Char>>.deduce(numToDeduce: Int, numToUse: Int) {
-			this.find {
-				it.containsAll(intToSignal[numToUse]!!)
-			}.also {
-				requireNotNull(it)
-				intToSignal[numToDeduce] = it
-				this.remove(it)
-			}
+			this.find { it.containsAll(intToSignal[numToUse]!!) }
+				.also {
+					requireNotNull(it)
+					intToSignal[numToDeduce] = it
+					this.remove(it)
+				}
 		}
 
 		//deduce all digits of length 6
@@ -43,11 +42,13 @@ class Day08 : Puzzle<Int>("Day08", 26, 61229) {
 		//deduce 3
 		inputLength5.deduce(3, 1)
 		//deduce 5
-		inputLength5.find { intToSignal[6]!!.containsAll(it) }.also {
-			requireNotNull(it)
-			intToSignal[5] = it
-			inputLength5.remove(it)
-		}
+		inputLength5
+			.find { intToSignal[6]!!.containsAll(it) }
+			.also {
+				requireNotNull(it)
+				intToSignal[5] = it
+				inputLength5.remove(it)
+			}
 		//deduce 2
 		intToSignal[2] = inputLength5.first()
 
