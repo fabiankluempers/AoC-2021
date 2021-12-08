@@ -3,28 +3,17 @@ import javax.swing.text.ChangedCharSetException
 
 class Day08 : Puzzle<Int>("Day08", 26, 61229) {
 
-	//This is not very useful for solving the actual problem but it solves part1
-	override fun part1(input: Input): Int {
-		val outputValues = input.map { it.split('|')[1].trim().split(' ') }
-		val occurrencesOfLength = outputValues
-			.flatten()
-			.groupingBy { it.length }
-			.eachCount()
-		return listOfNotNull(
-			occurrencesOfLength[2],
-			occurrencesOfLength[4],
-			occurrencesOfLength[3],
-			occurrencesOfLength[7],
-		).sum()
-	}
+	override fun part1(input: Input): Int = input
+			.flatMap { it.split(" | ")[1].split(' ') }
+			.count { it.length in listOf(2,3,4,7) }
 
 	override fun part2(input: Input): Int = input.sumOf(::solveLine)
 
 	//This works but it is really not pretty. I might optimize, if i find time.
 	private fun solveLine(line: String) : Int {
 		val intToSignal = mutableMapOf<Int, Set<Char>>()
-		val (input, output) = with(line.split('|')) {
-			Pair(this[0].trim().split(' '), this[1].trim().split(' '))
+		val (input, output) = with(line.split(" | ")) {
+			Pair(this[0].split(' '), this[1].split(' '))
 		}
 		val inputByLength = input.groupBy { it.length }.mapValues { it.value.map(String::toSet).toMutableList() }
 		intToSignal[1] = inputByLength[2]!!.first().toSet()
@@ -66,6 +55,6 @@ class Day08 : Puzzle<Int>("Day08", 26, 61229) {
 
 		val signalToString = intToSignal.map { Pair(it.value, it.key.toString()) }.toMap()
 
-		return output.joinToString { signalToString[it.toSet()]!! }.toInt()
+		return output.joinToString(separator = "") { signalToString[it.toSet()]!! }.toInt()
 	}
 }
