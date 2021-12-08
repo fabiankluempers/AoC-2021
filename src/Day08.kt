@@ -16,10 +16,10 @@ class Day08 : Puzzle<Int>("Day08", 26, 61229) {
 			Pair(this[0].split(' '), this[1].split(' '))
 		}
 		val inputByLength = input.groupBy { it.length }.mapValues { it.value.map(String::toSet).toMutableList() }
-		intToSignal[1] = inputByLength[2]!!.first().toSet()
-		intToSignal[4] = inputByLength[4]!!.first().toSet()
-		intToSignal[7] = inputByLength[3]!!.first().toSet()
-		intToSignal[8] = inputByLength[7]!!.first().toSet()
+		intToSignal[1] = inputByLength[2]!!.first()
+		intToSignal[4] = inputByLength[4]!!.first()
+		intToSignal[7] = inputByLength[3]!!.first()
+		intToSignal[8] = inputByLength[7]!!.first()
 
 		fun MutableList<Set<Char>>.deduce(numToDeduce: Int, numToUse: Int) {
 			this.find {
