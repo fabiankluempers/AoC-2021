@@ -1,11 +1,9 @@
-import java.lang.StringBuilder
-import javax.swing.text.ChangedCharSetException
-
 class Day08 : Puzzle<Int>("Day08", 26, 61229) {
+	private val uniqueLengths = listOf(2,3,4,7)
 
 	override fun part1(input: Input): Int = input
 			.flatMap { it.split(" | ")[1].split(' ') }
-			.count { it.length in listOf(2,3,4,7) }
+			.count { it.length in uniqueLengths }
 
 	override fun part2(input: Input): Int = input.sumOf(::solveLine)
 
@@ -16,10 +14,10 @@ class Day08 : Puzzle<Int>("Day08", 26, 61229) {
 			Pair(this[0].split(' '), this[1].split(' '))
 		}
 		val inputByLength = input.groupBy { it.length }.mapValues { it.value.map(String::toSet).toMutableList() }
-		intToSignal[1] = inputByLength[2]!!.first().toSet()
-		intToSignal[4] = inputByLength[4]!!.first().toSet()
-		intToSignal[7] = inputByLength[3]!!.first().toSet()
-		intToSignal[8] = inputByLength[7]!!.first().toSet()
+
+		listOf(1,7,4,8).forEachIndexed { index: Int, i: Int ->
+			intToSignal[i] = inputByLength[uniqueLengths[index]]!!.first()
+		}
 
 		fun MutableList<Set<Char>>.deduce(numToDeduce: Int, numToUse: Int) {
 			this.find {
