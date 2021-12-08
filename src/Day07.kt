@@ -1,5 +1,4 @@
 import kotlin.math.absoluteValue
-import kotlin.math.roundToInt
 
 class Day07 : Puzzle<Int>("Day07", 37, 168) {
 	override fun part1(input: Input): Int = solution(input, false)

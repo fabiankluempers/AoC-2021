@@ -27,3 +27,8 @@ fun <T> T.check(message : String = "", predicate: Predicate<T>) : T =
  * Identity function { x -> x }
  */
 fun <T> identity(x: T): T = x
+
+/**
+ * Generates a Sequence consisting of [x],[x], ...
+ */
+fun <T> cycle(x: T): Sequence<T> = generateSequence(x, ::identity)
