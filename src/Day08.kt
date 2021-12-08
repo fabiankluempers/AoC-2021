@@ -19,11 +19,12 @@ class Day08 : Puzzle<Int>("Day08", 26, 61229) {
 			intToSignal[i] = inputByLength[uniqueLengths[index]]!!.first()
 		}
 
-		fun MutableList<Set<Char>>.deduce(numToDeduce: Int, numToUse: Int) {
-			this.find { it.containsAll(intToSignal[numToUse]!!) }
+		fun MutableList<Set<Char>>.deduce(digit: Int, usingDigit: Int) {
+			val signalToUse = intToSignal[usingDigit]!!
+			this.find { if (it.size < signalToUse.size) signalToUse.containsAll(it) else it.containsAll(signalToUse) }
 				.also {
 					requireNotNull(it)
-					intToSignal[numToDeduce] = it
+					intToSignal[digit] = it
 					this.remove(it)
 				}
 		}
@@ -42,13 +43,7 @@ class Day08 : Puzzle<Int>("Day08", 26, 61229) {
 		//deduce 3
 		inputLength5.deduce(3, 1)
 		//deduce 5
-		inputLength5
-			.find { intToSignal[6]!!.containsAll(it) }
-			.also {
-				requireNotNull(it)
-				intToSignal[5] = it
-				inputLength5.remove(it)
-			}
+		inputLength5.deduce(5, 6)
 		//deduce 2
 		intToSignal[2] = inputLength5.first()
 
