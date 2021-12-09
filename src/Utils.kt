@@ -32,3 +32,13 @@ fun <T> identity(x: T): T = x
  * Generates a Sequence consisting of [x],[x], ...
  */
 fun <T> cycle(x: T): Sequence<T> = generateSequence(x, ::identity)
+
+/**
+ * Maps [transform] over each element in each iterable in this iterable.
+ */
+fun <T, R> Iterable<Iterable<T>>.map2d(transform : (T) -> R) = this.map { it.map(transform) }
+
+/**
+ * Represents a point in 2d space.
+ */
+data class Point(val x : Int, val y : Int)

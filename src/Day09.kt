@@ -2,15 +2,15 @@ class Day09 : Puzzle<Int>("Day09", 15, 1134) {
 	override fun part1(input: Input): Int {
 		val caveData = input.map { it.map(Char::digitToInt) }
 		val lowPoints = caveData.lowPoints()
-		return lowPoints.sumOf { caveData[it.first][it.second] + 1 }
+		return lowPoints.sumOf { caveData[it.x][it.y] + 1 }
 	}
 
-	private fun List<List<Int>>.lowPoints(): List<Pair<Int, Int>> {
-		val lowPoints = mutableListOf<Pair<Int, Int>>()
+	private fun List<List<Int>>.lowPoints(): List<Point> {
+		val lowPoints = mutableListOf<Point>()
 
 		for (x in this.indices) {
 			for (y in this[x].indices) {
-				if (this.isLowPoint(x, y)) lowPoints.add(Pair(x, y))
+				if (this.isLowPoint(x, y)) lowPoints.add(Point(x, y))
 			}
 		}
 
@@ -35,7 +35,7 @@ class Day09 : Puzzle<Int>("Day09", 15, 1134) {
 		}
 		val basinSizes = mutableListOf<Int>()
 		for (lowPoint in lowPoints) {
-			basinSizes += nullableCaveData.discoverBasin(lowPoint.first, lowPoint.second)
+			basinSizes += nullableCaveData.discoverBasin(lowPoint.x, lowPoint.y)
 		}
 		return basinSizes.sorted().takeLast(3).reduce { x, y -> x * y }
 	}

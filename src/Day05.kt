@@ -53,8 +53,6 @@ class Day05 : Puzzle<Int>("Day05", 5, 12) {
 	override fun part1(input: Input): Int = solution(input, filterDiagonals = true)
 
 	override fun part2(input: Input): Int = solution(input, filterDiagonals = false)
-
-	data class Point(val x: Int, val y: Int)
 }
 
-typealias Line = Pair<Day05.Point, Day05.Point>
+typealias Line = Pair<Point, Point>
