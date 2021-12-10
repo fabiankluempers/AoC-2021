@@ -12,33 +12,28 @@ class Day10 : Puzzle<Long>("Day10", 26397, 288957) {
 		val stack = ArrayDeque<Char>(line.length)
 		val falseClosing = mutableListOf<Char>()
 		for (char in line) {
-			if (char.isOpeningBracket()) {
+			if (char.isOpeningSymbol()) {
 				stack.add(char)
 			}
-			if (char.isClosingBracket()) {
-				if (stack.last() != char.reverseBracket()) {
+			if (char.isClosingSymbol()) {
+				if (stack.last() != char.flipStructureSymbol()) {
 					falseClosing.add(char)
 				}
 				stack.removeLast()
 			}
 		}
-		return Pair(falseClosing, stack.map { it.reverseBracket() }.reversed())
+		return Pair(falseClosing, stack.map { it.flipStructureSymbol() }.reversed())
 	}
 
-	private fun Char.isOpeningBracket() = when (this) {
+	private fun Char.isOpeningSymbol() = when (this) {
 		in listOf('(', '[', '{', '<') -> true
 		in listOf(')', ']', '}', '>') -> false
 		else -> error("$this is not a bracket")
 	}
 
-	private fun Char.isClosingBracket() = when (this) {
-		in listOf(')', ']', '}', '>') -> true
-		in listOf('(', '[', '{', '<') -> false
-		else -> error("$this is not a bracket")
-	}
+	private fun Char.isClosingSymbol() = !this.isOpeningSymbol()
 
-
-	private fun Char.reverseBracket() = when (this) {
+	private fun Char.flipStructureSymbol() = when (this) {
 		'(' -> ')'
 		')' -> '('
 		'[' -> ']'
