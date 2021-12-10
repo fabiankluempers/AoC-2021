@@ -1,44 +1,39 @@
 class Day10 : Puzzle<Long>("Day10", 26397, 288957) {
 	override fun part1(input: Input): Long = input
-		.mapNotNull { fixLine(it).first.firstOrNull() }
+		.mapNotNull { analyzeLine(it).first.firstOrNull() }
 		.sumOf { it.pointsForIllegal() }
 		.toLong()
 
 	/**
-	 * Returns all incorrect closing brackets as first and
-	 * all closing brackets that need to be added to complete the line as second.
+	 * Returns all incorrect closing symbols in [line] as first and
+	 * all closing symbols that need to be added to complete the [line] as second.
 	 */
-	private fun fixLine(line: String): Pair<List<Char>, List<Char>> {
+	private fun analyzeLine(line: String): Pair<List<Char>, List<Char>> {
 		val stack = ArrayDeque<Char>(line.length)
 		val falseClosing = mutableListOf<Char>()
 		for (char in line) {
-			if (char.isOpeningBracket()) {
+			if (char.isOpeningSymbol()) {
 				stack.add(char)
 			}
-			if (char.isClosingBracket()) {
-				if (stack.last() != char.reverseBracket()) {
+			if (char.isClosingSymbol()) {
+				if (stack.last() != char.flipStructureSymbol()) {
 					falseClosing.add(char)
 				}
 				stack.removeLast()
 			}
 		}
-		return Pair(falseClosing, stack.map { it.reverseBracket() }.reversed())
+		return Pair(falseClosing, stack.map { it.flipStructureSymbol() }.reversed())
 	}
 
-	private fun Char.isOpeningBracket() = when (this) {
+	private fun Char.isOpeningSymbol() = when (this) {
 		in listOf('(', '[', '{', '<') -> true
 		in listOf(')', ']', '}', '>') -> false
-		else -> error("$this is not a bracket")
+		else -> error("$this is not a structure symbol")
 	}
 
-	private fun Char.isClosingBracket() = when (this) {
-		in listOf(')', ']', '}', '>') -> true
-		in listOf('(', '[', '{', '<') -> false
-		else -> error("$this is not a bracket")
-	}
+	private fun Char.isClosingSymbol() = !this.isOpeningSymbol()
 
-
-	private fun Char.reverseBracket() = when (this) {
+	private fun Char.flipStructureSymbol() = when (this) {
 		'(' -> ')'
 		')' -> '('
 		'[' -> ']'
@@ -47,7 +42,7 @@ class Day10 : Puzzle<Long>("Day10", 26397, 288957) {
 		'}' -> '{'
 		'<' -> '>'
 		'>' -> '<'
-		else -> error("cant reverse because $this is not a bracket")
+		else -> error("cant reverse because $this is not a structure symbol")
 	}
 
 	private fun Char.pointsForIllegal() = when (this) {
@@ -71,7 +66,7 @@ class Day10 : Puzzle<Long>("Day10", 26397, 288957) {
 		.fold(0L) { acc, i -> acc * 5 + i }
 
 	override fun part2(input: Input): Long = input
-		.map { fixLine(it) }
+		.map { analyzeLine(it) }
 		.filter { it.first.isEmpty() }
 		.map { calculateScoreForFixed(it.second) }
 		.sorted()
