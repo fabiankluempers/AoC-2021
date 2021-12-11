@@ -1,7 +1,7 @@
 import kotlin.system.measureTimeMillis
 
 fun main() {
-	val puzzle = Day10()
+	val puzzle = Day11()
 	val testInput = readInput("${puzzle.name}_test")
 	check(puzzle.part1(testInput) == puzzle.testResultPart1)
 	check(puzzle.part2(testInput) == puzzle.testResultPart2)
