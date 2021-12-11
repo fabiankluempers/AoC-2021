@@ -11,7 +11,7 @@ class Day11 : Puzzle<Int>("Day11", 1656, 195) {
 	override fun part2(input: Input): Int {
 		val octopuses = input.toOctopuses()
 		var numOfSteps = 0
-		while (!octopuses.allCells { it == 0 }) {
+		while (octopuses.anyCell { it != 0 }) {
 			octopuses.step()
 			numOfSteps++
 		}
@@ -28,10 +28,10 @@ class Day11 : Puzzle<Int>("Day11", 1656, 195) {
 		val evaluated = mutableSetOf<Array2dIndex>()
 		while (unevaluated.isNotEmpty()) {
 			val index = unevaluated.first()
-			val diagonals = index.getAdjacentIndices().filter { it validIndexOf this }
-			diagonals.forEach { this.updateAt(it) { x -> x + 1 } }
-			unevaluated += diagonals.filter { this[it] > 9 }
+			val adjacent = index.getAdjacentIndices().filter { it validIndexOf this }
+			adjacent.forEach { this.updateAt(it) { x -> x + 1 } }
 			evaluated += index
+			unevaluated += (adjacent.filter { this[it] > 9 })
 			unevaluated -= evaluated
 		}
 		val flashing = this.indicesWhere { it > 9 }
