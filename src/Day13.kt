@@ -48,19 +48,13 @@ class Day13 : Puzzle<Int>("Day13", 17, 0) {
 		val points = foldInputSheet(input, input.generateInstructions())
 		val maxX = points.maxOf { it.x }
 		val maxY = points.maxOf { it.y }
-		val result = Array(maxY + 1) { Array(maxX + 1) { "  " } }
+		val result = Array(maxY + 1) { Array(maxX + 1) { "    " } }
 		for (point in points) {
-			result[point.y][point.x] = "||"
+			result[point.y][point.x] = ":^) "
 		}
-		val resultString = StringBuilder()
-		resultString.appendLine()
-		for (y in result.indices) {
-			for (x in result[y].indices) {
-				resultString.append(result[y][x])
-			}
-			resultString.appendLine()
-		}
-		println(resultString)
+		val resultString = result.joinToString("\n") { it.joinToString(separator = "", transform = ::identity) }
+		println("\n$resultString \n")
 		return 0
 	}
 }
+
