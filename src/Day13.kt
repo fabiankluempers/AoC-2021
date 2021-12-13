@@ -13,16 +13,14 @@ class Day13 : Puzzle<Int>("Day13", 17, 0) {
 			when (instruction) {
 				is FoldX -> {
 					for (point in points.filter { it.x > instruction.index }) {
-						val dx = 2 * instruction.index - point.x
 						points.remove(point)
-						points.add(point.copy(x = dx))
+						points.add(point.copy(x = (2 * instruction.index - point.x)))
 					}
 				}
 				is FoldY -> {
 					for (point in points.filter { it.y > instruction.index }) {
-						val dy = 2 * instruction.index - point.y
 						points.remove(point)
-						points.add(point.copy(y = dy))
+						points.add(point.copy(y = (2 * instruction.index - point.y)))
 					}
 				}
 			}
