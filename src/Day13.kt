@@ -9,30 +9,31 @@ class Day13 : Puzzle<Int>("Day13", 17, 0) {
 		val points = input
 			.takeWhile { it.isNotBlank() }
 			.map { with(it.splitToInt(',')) { Point(x = component1(), y = component2()) } }.toMutableSet()
-		for (instruction in instructions) {
-			when (instruction) {
-				is FoldX -> {
-					for (point in points.filter { it.x > instruction.index }) {
-						points.remove(point)
-						points.add(point.copy(x = (2 * instruction.index - point.x)))
-					}
-				}
-				is FoldY -> {
-					for (point in points.filter { it.y > instruction.index }) {
-						points.remove(point)
-						points.add(point.copy(y = (2 * instruction.index - point.y)))
-					}
-				}
-			}
-		}
+		for (instruction in instructions) { instruction.foldAccordingly(points) }
 		return points
 	}
 
-	sealed class FoldInstruction()
+	sealed class FoldInstruction {
+		abstract fun foldAccordingly(points: MutableSet<Point>)
+	}
 
-	data class FoldX(val index: Int) : FoldInstruction()
+	data class FoldX(val index: Int) : FoldInstruction() {
+		override fun foldAccordingly(points: MutableSet<Point>) {
+			for (point in points.filter { it.x > this.index }) {
+				points.remove(point)
+				points.add(point.copy(x = (2 * this.index - point.x)))
+			}
+		}
+	}
 
-	data class FoldY(val index: Int) : FoldInstruction()
+	data class FoldY(val index: Int) : FoldInstruction() {
+		override fun foldAccordingly(points: MutableSet<Point>) {
+			for (point in points.filter { it.y > this.index }) {
+				points.remove(point)
+				points.add(point.copy(y = (2 * this.index - point.y)))
+			}
+		}
+	}
 
 	private fun readFoldInstruction(string: String): FoldInstruction {
 		val (left, right) = string.split('=')
