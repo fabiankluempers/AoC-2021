@@ -3,7 +3,7 @@ class Day13 : Puzzle<Int>("Day13", 17, 0) {
 
 	private fun Input.generateInstructions() = this
 		.takeLastWhile { it.isNotBlank() }
-		.map { readFoldInstruction(it) }
+		.map { parseFoldInstruction(it) }
 
 	private fun foldInputSheet(input: Input, instructions: List<FoldInstruction>): Set<Point> {
 		val points = input
@@ -35,7 +35,7 @@ class Day13 : Puzzle<Int>("Day13", 17, 0) {
 		}
 	}
 
-	private fun readFoldInstruction(string: String): FoldInstruction {
+	private fun parseFoldInstruction(string: String): FoldInstruction {
 		val (left, right) = string.split('=')
 		return when (left.last()) {
 			'x' -> FoldX(right.toInt())
