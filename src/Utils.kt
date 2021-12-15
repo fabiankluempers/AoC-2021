@@ -49,15 +49,20 @@ typealias Array2d<T> = Array<Array<T>>
 
 data class Array2dIndex(val row: Int, val column: Int)
 
-fun Array2dIndex.getAdjacentIndices() = setOf(
-	Array2dIndex(row, (column + 1)),
-	Array2dIndex(row, (column - 1)),
-	Array2dIndex((row + 1), column),
-	Array2dIndex((row - 1), column),
+fun Array2dIndex.getAdjacentIndices() = getHorAndVerAdjacentIndices() + getDiagonallyAdjacentIndices()
+
+fun Array2dIndex.getDiagonallyAdjacentIndices() = setOf(
 	Array2dIndex((row + 1), (column + 1)),
 	Array2dIndex((row + 1), (column - 1)),
 	Array2dIndex((row - 1), (column + 1)),
 	Array2dIndex((row - 1), (column - 1)),
+)
+
+fun Array2dIndex.getHorAndVerAdjacentIndices() = setOf(
+	Array2dIndex(row, (column + 1)),
+	Array2dIndex(row, (column - 1)),
+	Array2dIndex((row + 1), column),
+	Array2dIndex((row - 1), column),
 )
 
 operator fun <T> Array2d<T>.get(array2dIndex: Array2dIndex) = this[array2dIndex.row][array2dIndex.column]
