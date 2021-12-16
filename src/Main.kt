@@ -1,7 +1,7 @@
 import kotlin.system.measureTimeMillis
 
 fun main() {
-	val puzzle = Day15()
+	val puzzle = Day16()
 	val testInput = readInput("${puzzle.name}_test")
 	var result: Any
 	println(
