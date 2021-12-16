@@ -3,7 +3,6 @@ class Day16 : Puzzle<Long>("Day16", 0, 0) {
 		.first()
 		.hexToBinary()
 		.parseBinaryToPacket()
-		.component2()
 		.sumOfVersions()
 		.toLong()
 
@@ -14,7 +13,14 @@ class Day16 : Puzzle<Long>("Day16", 0, 0) {
 			is OperationPacket -> version + subPackets.sumOf { it.sumOfVersions() }
 		}
 
-	private fun String.parseBinaryToPacket(): Pair<String, Packet> {
+	private fun String.parseBinaryToPacket(): Packet {
+		val (_, packet) = parseRec()
+		return packet
+	}
+
+	// I Could have written this a lot cleaner if had used a StringBuilder or Deque
+	// instead of operating on the String with an index.
+	private fun String.parseRec(): Pair<String, Packet> {
 		var index = 6
 		val version = this.take(3).toInt(2)
 		val packetType = this.drop(3).take(3).toInt(2)
@@ -40,7 +46,7 @@ class Day16 : Puzzle<Long>("Day16", 0, 0) {
 					var subPacketInput = this.substring((index until index + totalLength))
 					index += totalLength
 					while (subPacketInput.isNotEmpty()) {
-						val (string, packet) = subPacketInput.parseBinaryToPacket()
+						val (string, packet) = subPacketInput.parseRec()
 						subPackets.add(packet)
 						subPacketInput = string
 					}
@@ -51,7 +57,7 @@ class Day16 : Puzzle<Long>("Day16", 0, 0) {
 					index += 11
 					var remainingInput = this.drop(index)
 					repeat(numSubPackets) {
-						val (string, packet) = remainingInput.parseBinaryToPacket()
+						val (string, packet) = remainingInput.parseRec()
 						subPackets.add(packet)
 						remainingInput = string
 					}
@@ -62,16 +68,16 @@ class Day16 : Puzzle<Long>("Day16", 0, 0) {
 	}
 
 	private fun String.hexToBinary() = this
-		.map { it.digitToInt(16).toString(2).addLeadingZeroes() }
-		.joinToString("") { it }
+		.map { it.digitToInt(16).toString(2).padStart(4, '0') }
+		.joinToString("")
 
+	// String.padStart() exists...
 	private fun String.addLeadingZeroes() = "${"0".repeat(4 - length)}$this"
 
 	override fun part2(input: Input): Long = input
 		.first()
 		.hexToBinary()
 		.parseBinaryToPacket()
-		.component2()
 		.evaluate()
 
 	private fun Packet.evaluate(): Long = when (this) {
@@ -90,7 +96,7 @@ class Day16 : Puzzle<Long>("Day16", 0, 0) {
 		}
 	}
 
-	sealed class Packet()
+	sealed class Packet
 
 	data class LiteralPacket(val version: Int, val literal: Long) : Packet()
 
