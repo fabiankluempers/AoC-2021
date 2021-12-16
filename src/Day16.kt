@@ -24,6 +24,7 @@ class Day16 : Puzzle<Long>("Day16", 0, 0) {
 				.drop(index)
 				.chunkedSequence(5)
 				.takeWhile { chunk -> !last.also { last = chunk.first() == '0' } }
+				.toList()
 				.map { it.drop(1) }
 				.also { index += (it.count() * 5) }
 				.joinToString("")
