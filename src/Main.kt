@@ -1,7 +1,8 @@
+import javax.swing.DefaultDesktopManager
 import kotlin.system.measureTimeMillis
 
 fun main() {
-	val puzzle = Day16()
+	val puzzle = Day17()
 	val testInput = readInput("${puzzle.name}_test")
 	var result: Any
 	println(
