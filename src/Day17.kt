@@ -12,7 +12,7 @@ class Day17 : Puzzle<Int>("Day17", 45, 112) {
 		val bounds = regex.findAll(input.first()).map { it.value.toInt() }.toList()
 		val xRange = bounds[0]..bounds[1]
 		val yRange = bounds[2]..bounds[3]
-		val xCandidates = (0..xRange.last).filter { gauss(it) in xRange }.minOf(::identity)..xRange.last
+		val xCandidates = (0..xRange.last).dropWhile { gauss(it) !in xRange }
 		val yCandidates = yRange.first..yRange.first.absoluteValue
 		var result = 0
 		for (xCandidate in xCandidates) {
@@ -21,7 +21,7 @@ class Day17 : Puzzle<Int>("Day17", 45, 112) {
 				var y = yCandidate
 				var xPos = 0
 				var yPos = 0
-				while (yPos >= yRange.first) {
+				while (yPos >= yRange.first && xPos <= xRange.last) {
 					if (xPos in xRange && yPos in yRange) {
 						result++
 						break
