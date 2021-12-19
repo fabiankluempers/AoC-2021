@@ -3,7 +3,7 @@ class Day05 : Puzzle<Int>("Day05", 5, 12) {
 	private fun Input.toLines(): List<Line> = this.map { line ->
 		val points = line.split(" -> ").map {
 			val values = it.split(',')
-			Point(x = values[0].toInt(), y = values[1].toInt())
+			Vec2d(x = values[0].toInt(), y = values[1].toInt())
 		}
 		Line(points[0], points[1])
 	}
@@ -13,19 +13,19 @@ class Day05 : Puzzle<Int>("Day05", 5, 12) {
 	//This solution can be improved by using a canonical representation (only from left to right and top to bottom),
 	//which results in less cases.
 	//Additionally a bounded range should be used to calculate all points of the diagonal lines.
-	private fun Line.expandLine(): List<Point> = when {
+	private fun Line.expandLine(): List<Vec2d> = when {
 		first.x == second.x -> //horizontal
-			(if (first.y <= second.y) (first.y..second.y) else (second.y..first.y)).map { Point(first.x, it) }
+			(if (first.y <= second.y) (first.y..second.y) else (second.y..first.y)).map { Vec2d(first.x, it) }
 		first.y == second.y -> //vertical
-			(if (first.x <= second.x) (first.x..second.x) else (second.x..first.x)).map { Point(it, first.y) }
+			(if (first.x <= second.x) (first.x..second.x) else (second.x..first.x)).map { Vec2d(it, first.y) }
 		first.x < second.x && first.y < second.y -> //diagonal ascending from left
-			generateSequence(first) { Point(it.x + 1, it.y + 1) }.takeWhile { it != second }.plus(second).toList()
+			generateSequence(first) { Vec2d(it.x + 1, it.y + 1) }.takeWhile { it != second }.plus(second).toList()
 		first.x < second.x && first.y > second.y -> //diagonal ascending from right
-			generateSequence(first) { Point(it.x + 1, it.y - 1) }.takeWhile { it != second }.plus(second).toList()
+			generateSequence(first) { Vec2d(it.x + 1, it.y - 1) }.takeWhile { it != second }.plus(second).toList()
 		first.x > second.x && first.y < second.y -> //diagonal descending from left
-			generateSequence(first) { Point(it.x - 1, it.y + 1) }.takeWhile { it != second }.plus(second).toList()
+			generateSequence(first) { Vec2d(it.x - 1, it.y + 1) }.takeWhile { it != second }.plus(second).toList()
 		first.x > second.x && first.y > second.y -> //diagonal descending from right
-			generateSequence(first) { Point(it.x - 1, it.y - 1) }.takeWhile { it != second }.plus(second).toList()
+			generateSequence(first) { Vec2d(it.x - 1, it.y - 1) }.takeWhile { it != second }.plus(second).toList()
 		else -> error("$this is not a horizontal, vertical or diagonal line") //would be infinite loop anyways
 	}
 
@@ -55,4 +55,4 @@ class Day05 : Puzzle<Int>("Day05", 5, 12) {
 	override fun part2(input: Input): Int = solution(input, filterDiagonals = false)
 }
 
-typealias Line = Pair<Point, Point>
+typealias Line = Pair<Vec2d, Vec2d>

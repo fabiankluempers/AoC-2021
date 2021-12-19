@@ -1,22 +1,22 @@
 class Day13 : Puzzle<Int>("Day13", 17, 0) {
 	sealed class FoldInstruction {
-		abstract fun foldAccordingly(points: MutableSet<Point>)
+		abstract fun foldAccordingly(vec2ds: MutableSet<Vec2d>)
 	}
 
 	data class FoldVer(val index: Int) : FoldInstruction() {
-		override fun foldAccordingly(points: MutableSet<Point>) {
-			for (point in points.filter { it.x > this.index }) {
-				points.remove(point)
-				points.add(point.copy(x = (2 * this.index - point.x)))
+		override fun foldAccordingly(vec2ds: MutableSet<Vec2d>) {
+			for (point in vec2ds.filter { it.x > this.index }) {
+				vec2ds.remove(point)
+				vec2ds.add(point.copy(x = (2 * this.index - point.x)))
 			}
 		}
 	}
 
 	data class FoldHor(val index: Int) : FoldInstruction() {
-		override fun foldAccordingly(points: MutableSet<Point>) {
-			for (point in points.filter { it.y > this.index }) {
-				points.remove(point)
-				points.add(point.copy(y = (2 * this.index - point.y)))
+		override fun foldAccordingly(vec2ds: MutableSet<Vec2d>) {
+			for (point in vec2ds.filter { it.y > this.index }) {
+				vec2ds.remove(point)
+				vec2ds.add(point.copy(y = (2 * this.index - point.y)))
 			}
 		}
 	}
@@ -34,10 +34,10 @@ class Day13 : Puzzle<Int>("Day13", 17, 0) {
 		.takeLastWhile { it.isNotBlank() }
 		.map { parseFoldInstruction(it) }
 
-	private fun foldInputSheet(input: Input, instructions: List<FoldInstruction>): Set<Point> {
+	private fun foldInputSheet(input: Input, instructions: List<FoldInstruction>): Set<Vec2d> {
 		val points = input
 			.takeWhile { it.isNotBlank() }
-			.map { with(it.splitToInt(',')) { Point(x = component1(), y = component2()) } }.toMutableSet()
+			.map { with(it.splitToInt(',')) { Vec2d(x = component1(), y = component2()) } }.toMutableSet()
 		for (instruction in instructions) { instruction.foldAccordingly(points) }
 		return points
 	}

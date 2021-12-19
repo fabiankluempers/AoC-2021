@@ -5,12 +5,12 @@ class Day09 : Puzzle<Int>("Day09", 15, 1134) {
 		return lowPoints.sumOf { caveData[it.x][it.y] + 1 }
 	}
 
-	private fun List<List<Int>>.lowPoints(): List<Point> {
-		val lowPoints = mutableListOf<Point>()
+	private fun List<List<Int>>.lowPoints(): List<Vec2d> {
+		val lowPoints = mutableListOf<Vec2d>()
 
 		for (x in this.indices) {
 			for (y in this[x].indices) {
-				if (this.isLowPoint(x, y)) lowPoints.add(Point(x, y))
+				if (this.isLowPoint(x, y)) lowPoints.add(Vec2d(x, y))
 			}
 		}
 

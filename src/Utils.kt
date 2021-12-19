@@ -41,8 +41,9 @@ fun <T, R> Iterable<Iterable<T>>.map2d(transform: (T) -> R) = this.map { it.map(
 /**
  * Represents a point in 2d space.
  */
-data class Point(val x: Int, val y: Int)
+data class Vec2d(val x: Int, val y: Int)
 
+data class Vec3d(val x : Int, val y : Int, val z : Int)
 
 //2d Array stuff
 typealias Array2d<T> = Array<Array<T>>
